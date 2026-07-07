@@ -7,7 +7,7 @@ L = 100         # Grid size
 t_steps = 600   # Total simulation frames for the GIF
 Du = 0.16 #Diffusion rate of activator u
 Dv = 0.08 #Diffusion rate of inhibitor v
-f, k = 0.035, 0.060
+f, k = 0.035, 0.064
 dt = 1.0
 
 # Define a basic 5-point stencil Laplacian function
@@ -19,19 +19,22 @@ def lapl(grid):
     )
 
 def initiliase(len, option):
-    match option:
-        case 0: # Random
-            gridu = np.random.rand(len, len)
-            gridv = np.random.rand(len, len)
-        case 1: # Center dot
-            gridu = np.ones((L, L))
-            gridv = np.zeros((L, L))
+    if option == 0:
+        gridu = np.random.rand(len, len)
+        gridv = np.random.rand(len, len)
+    elif option == 1:
+        gridu = np.ones((L, L))
+        gridv = np.zeros((L, L))
 
-            # initial concentrations at center
-            low = (len // 2) - 9
-            high = (len // 2) + 10
-            gridu[low:high, low:high] = 0.5 + np.random.uniform(0, 0.1, (19, 19))
-            gridv[low:high, low:high] = 0.25 + np.random.uniform(0, 0.1, (19, 19))
+        # initial concentrations at center
+        low = (len // 2) - 9
+        high = (len // 2) + 10
+        gridu[low:high, low:high] = 0.5 + np.random.uniform(0, 0.1, (19, 19))
+        gridv[low:high, low:high] = 0.25 + np.random.uniform(0, 0.1, (19, 19))
+    else:
+        gridu = np.random.rand(len, len)
+        gridv = np.random.rand(len, len)
+
     return gridu, gridv
 
 # choose options
