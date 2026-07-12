@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import time
 
 # --- 1. Define Constants & Grid Dimensions ---
 W, L = 100, 500 # Width and height
@@ -64,10 +65,19 @@ initu, initv = initiliase(L, W, 1)
 
 im_u = plt.imshow(initu, cmap='viridis', interpolation='nearest', vmin=0, vmax=1)
 
+start_time = time.perf_counter()
+
 fig = plt.gcf()
 ani = FuncAnimation(fig, update, frames=t_steps, blit=True, interval=40)
 
+
+
 ani.save('reaction_diffusion.gif', writer='pillow', fps=25)
 plt.close()
+
+end_time = time.perf_counter()
+tot_time = end_time - start_time
+
+print(f"Execution time: {tot_time:.6f} seconds")
 
 print("Finished successfully")
